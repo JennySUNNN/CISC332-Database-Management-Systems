@@ -1,0 +1,208 @@
+create table location_3(
+localName varchar(100) not null primary key,
+street varchar(100),
+city varchar(100),
+postalCode char(6));
+ 
+create table driver(
+FName varchar(50) not null,
+LName varchar(50) not null,
+emergencyPhone char(10) not null,
+licensePlate char(6) not null,
+licenseNum char(10) not null,
+rescueName char(15) not null,
+primary key (FName,LName));
+ 
+create table animal(
+animalID char(6) not null primary key,
+locationName varchar(100),
+animalType varchar(100),
+FName varchar(50),
+LName varchar(50),
+foreign key (locationName) references location_3 (localName) on delete cascade,
+foreign key (FName, LName) references driver (FName, LName) on delete set null);
+ 
+create table family(
+Lname varchar(50) not null,
+animalID char(6) not null,
+street varchar(100),
+city varchar(100),
+postalCode char(6),
+Amount integer,
+primary key (animalID, Lname),
+foreign key (animalID) references animal (animalID) on delete cascade);
+ 
+create table familyphone(
+animalID char(6) not null,
+Lname varchar(50) not null,
+phone char(10),
+primary key (animalID, Lname, phone),
+foreign key (animalID, Lname) references family (animalID, Lname) on delete cascade);
+ 
+create table vetVisit(
+FName varchar(50) not null,
+Lname varchar(50) not null,
+visitDate date not null,
+health varchar(100),
+animalWeight integer,
+animalID char(6) not null,
+primary key (Fname, Lname, visitDate, animalId),
+foreign key (animalId) references animal (animalID) on delete cascade);
+ 
+create table keep(
+animalID char(6) not null,
+locationName varchar(50) not null,
+arriveDate date,
+money_transfer integer,
+primary key (animalID, locationName),
+foreign key (animalID) references animal (animalID) on delete cascade,
+foreign key (locationName) references location_3 (localName) on delete cascade);
+ 
+create table locationPhone(
+locationName varchar(50) not null,
+phone char(10),
+primary key (locationName, phone),
+foreign key (locationName) references location_3 (localName) on delete cascade);
+ 
+create table SPCA(
+localName varchar(100),
+foreign key (localName) references location_3 (localName) on delete cascade);
+ 
+create table RescueOrganization(
+localName varchar(100),
+foreign key (localName) references location_3 (localName) on delete cascade);
+ 
+create table shelter(
+localName varchar(100),
+s_url varchar(50) not null,
+foreign key (localName) references location_3 (localName) on delete cascade);
+ 
+create table animalType(
+localName varchar(100) not null,
+animalType varchar(100) not null,
+maxiNum integer,
+foreign key (localName) references shelter (localName) on delete cascade,
+primary key (localName, animalType));
+ 
+create table donation(
+donationNum char(4) not null primary key,
+localName varchar(100) not null,
+Name varchar(50) not null,
+donateDate date,
+Amount integer);
+
+create table employee(
+Fname varchar(50) not null,
+Lname varchar(50) not null,
+street varchar(100),
+city varchar(100),
+postalCode char(6),
+locationName varchar(100),
+primary key (Fname, Lname),
+foreign key (locationName) references location_3 (localName) on delete cascade);
+ 
+create table employeePhone(
+Fname varchar(50) not null,
+Lname varchar(50) not null,
+phone char(10),
+primary key (Fname, Lname, phone),
+foreign key (Fname, Lname)  references employee (Fname, Lname) on delete cascade);
+ 
+ 
+
+
+
+insert into location_3 values ('A_SPCA', 'York Street', 'Toronto', 'K8K6F3');
+insert into location_3 values ('B_SPCA', 'Johnson Street', 'Kingston', 'K1E6F2');
+insert into location_3 values ('C_SPCA', 'George Street', 'Kingston', 'K1M6E2');
+insert into location_3 values ('shelterOne', 'Alfred Street', 'Montreal', 'K7K3Z4');
+insert into location_3 values ('shelterTwo', 'Barrie Street', 'Ottawa', 'K7N2Z4');
+insert into location_3 values ('rescueOne', 'West Street', 'Montreal', 'K8M3Z4');
+insert into location_3 values ('rescueTwo', 'North Street', 'Montreal', 'K6H2J5');
+insert into location_3 values ('rescueThree', 'Colborne Street', 'Kingston', 'N2Z3J5');
+
+insert into driver values ('Peter', 'Tyler', '6551111111', 'CKCZ11', '1234567890','rescueOne');
+insert into driver values ('Randy', 'Gilmore', '6112222222', 'CKCJ22', '1357908642','rescueOne');
+insert into driver values ('Erica', 'Smith', '6223333333', 'NZND99', '2346789765','rescueTwo');
+insert into driver values ('Lin', 'Jake', '6223333366', 'NZND10', '2342349765','rescueTwo');
+insert into driver values ('Ann', 'John', '6223333399', 'NZMK99', '2346789355','rescueTwo');
+insert into driver values ('Emily', 'Taylor', '6218333399', 'NMMK99', '2346764355','rescueTwo');
+insert into driver values ('Charles', 'Martin', '6225573399', 'NZML89', '234909355','rescueOne');
+
+insert into animal values ('111111', 'A_SPCA', 'dog','Randy', 'Gilmore');
+insert into animal values ('444444', 'A_SPCA', 'rabbit','Erica', 'Smith');
+insert into animal values ('878889', 'A_SPCA', 'rabbit','Erica', 'Smith');
+insert into animal values ('445566', 'A_SPCA', 'cat','Lin', 'Jake');
+insert into animal values ('444555', 'A_SPCA', 'rabbit','Erica', 'Smith');
+insert into animal values ('222222', 'B_SPCA','cat', 'Peter', 'Tyler');
+insert into animal values ('555555', 'B_SPCA','cat', 'Randy', 'Gilmore');
+insert into animal values ('555666', 'B_SPCA','dog', 'Ann', 'John');
+insert into animal values ('553855', 'B_SPCA','rabit', 'Peter', 'Tyler');
+insert into animal values ('333333', 'shelterOne', 'rabbit', 'Peter', 'Tyler');
+
+insert into family values ('Yang', '111111', 'Albert Street', 'Kingston', 'K7L2N3', '100');
+insert into family values ('Xu', '222222', 'Division Street', 'Ottawa', 'K2K3Z6', '200');
+insert into family values ('Sun', '333333', 'Stuart Street', 'Kingston', 'K7K8N8', '180');
+
+insert into familyphone values ('111111', 'Yang', '6106666666');
+insert into familyphone values ('222222', 'Xu', '6107777777');
+insert into familyphone values ('333333', 'Sun', '6108888888');
+
+insert into vetVisit values ('Jason', 'Adrian', '2020-01-22', 'healthy', '20', '111111');
+insert into vetVisit values ('Boris', 'Alex', '2019-11-20', 'healthy', '18', '222222');
+insert into vetVisit values ('Paul', 'Rach', '2020-01-18', 'healthy', '15', '333333');
+
+insert into keep values ('111111', 'rescueOne', '2019-08-29', '300');
+insert into keep values ('333333', 'shelterOne', '2020-01-05', '280');
+
+insert into locationPhone values ('A_SPCA', '6101231234');
+insert into locationPhone values ('B_SPCA', '6111231234');
+insert into locationPhone values ('C_SPCA', '6111231235');
+insert into locationPhone values ('shelterOne', '6121231234');
+insert into locationPhone values ('shelterTwo', '6131231234');
+insert into locationPhone values ('rescueOne', '6141231234');
+insert into locationPhone values ('rescueTwo', '6151231234');
+insert into locationPhone values ('rescueThree', '62308096667');
+
+insert into SPCA values ('A_SPCA');
+insert into SPCA values ('B_SPCA');
+insert into SPCA values ('C_SPCA');
+
+insert into RescueOrganization values ('rescueOne');
+insert into RescueOrganization values ('rescueTwo');
+insert into RescueOrganization values ('rescueThree');
+
+insert into shelter values ('shelterOne','www.shelterOne.ca');
+insert into shelter values ('shelterTwo','www.shelterTwo.ca');
+
+insert into animalType values ('shelterOne', 'cat', '30');
+insert into animalType values ('shelterTwo', 'cat', '45');
+insert into animalType values ('shelterOne', 'dog', '20');
+
+insert into donation values ('0000', 'A_SPCA', 'Alice Cao', '2018-09-26', '500');
+insert into donation values ('1111', 'rescueOne', 'Vicky Yan', '2018-10-08', '800'); 
+insert into donation values ('2222', 'B_SPCA', 'Jenny Yi', '2019-08-20', '680');
+insert into donation values ('3933', 'rescueOne', 'Dawes Wang', '2018-01-09', '200');
+insert into donation values ('4444', 'B_SPCA', 'Dawes Wang', '2019-02-09', '210');
+insert into donation values ('4488', 'B_SPCA', 'Amelia Thomas', '2018-08-09', '280');
+insert into donation values ('4994', 'A_SPCA', 'William James', '2020-02-18', '2100');
+insert into donation values ('6764', 'B_SPCA', 'Dawes Wang', '2018-12-09', '320');
+insert into donation values ('5555', 'rescueTwo', 'Mary Joseph', '2018-10-04', '300');
+insert into donation values ('6666', 'rescueOne', 'Dawes Wang', '2018-08-01', '290');
+insert into donation values ('5455', 'rescueTwo', 'Mary Joseph', '2019-10-04', '300');
+insert into donation values ('2225', 'rescueTwo', 'Mary Joseph', '2020-10-04', '300');
+insert into donation values ('3355', 'rescueTwo', 'Lily Lam', '2019-11-24', '350');
+insert into donation values ('6677', 'rescueOne', 'Emma Smith', '2019-08-01', '200');
+insert into donation values ('6688', 'rescueOne', 'Jessie Li', '2020-09-01', '270');
+insert into donation values ('6699', 'rescueOne', 'Damian Jones', '2018-08-01', '290');
+
+insert into employee values ('Adam', 'Smith', 'Kings Street', 'Kingston', 'N9I8KJ', 'A_SPCA');
+insert into employee values ('Jack', 'Wilson', 'Yonge Street', 'Toronto', 'Z65N87', 'shelterOne');
+insert into employee values ('Kate', 'Miller', 'Queen Street', 'Kingston', 'N77KZ3', 'rescueOne');
+
+insert into employeePhone values ('Adam', 'Smith', '6131111111');
+insert into employeePhone values ('Jack', 'Wilson', '6132222222');
+insert into employeePhone values ('Kate', 'Miller', '6133333333');
+
+
+
